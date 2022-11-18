@@ -4,19 +4,7 @@ networks:
   backend:
 
 services:
-  rails_firestore_db:
-    image: postgres
-    hostname: rails_firestore_db
-    volumes:
-      - ./tmp/db:/var/lib/postgresql
-    environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_HOST_AUTH_METHOD: trust
-    ports:
-      - "5432:5432"
-    networks:
-      - backend
-  rails_firestore_web:
+  regex_backend_web:
     build:
       context: .
       dockerfile: docker/web/Dockerfile
@@ -24,18 +12,18 @@ services:
     volumes:
       - .:/myapp
     environment:
-      FIRESTORE_EMULATOR_HOST: 'rails_firestore_firebase:8080'
+      FIRESTORE_EMULATOR_HOST: 'regex_backend_firebase:8080'
       GCP_AUTH_KEY_FILE: 'service_account.json'
       GCP_PROJECT_ID: 'regex-bc723'
     ports:
       - "3000:3000"
     networks:
       - backend
-  rails_firestore_firebase:
+  regex_backend_firebase:
     build:
       context: .
       dockerfile: docker/firebase/Dockerfile
-    hostname: rails_firestore_firebase
+    hostname: regex_backend_firebase
     volumes:
       - ./firebase/emulators/:/opt/workspace:cached
       - ./firebase/bin/:/root/.cache:cached

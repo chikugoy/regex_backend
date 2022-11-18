@@ -4,15 +4,15 @@ module Firestore
     class_attribute :collection_path
 
     class << self
-      def find(*ids)
-        results = []
-        ids.each do |id|
-          result = firestore.col(@collection_path).doc(id).get.fields
-          next if !result
-          results << self_new(result.merge({id: id}))
-        end
-        results
-      end
+      # def find(*ids)
+      #   results = []
+      #   ids.each do |id|
+      #     result = firestore.col(@collection_path).doc(id).get.fields
+      #     next if !result
+      #     results << self_new(result.merge({id: id}))
+      #   end
+      #   results
+      # end
 
       def find_row(id)
         results = self.find(id)
@@ -33,22 +33,22 @@ module Firestore
         end
       end
 
-      def create(data)
-        raise Exception.new("#{self.class.name} create args not hash") unless data.is_a?(Hash)
-
-        instance = self_new(data)
-        instance.created_at ||= Time.current
-        instance.updated_at ||= Time.current
-
-        return instance unless instance.valid?
-
-        ref = firestore.col @collection_path
-        instance.attributes.delete('id')
-        ref = ref.add instance.attributes
-        instance.id = ref.document_id
-
-        instance
-      end
+      # def create(data)
+      #   raise Exception.new("#{self.class.name} create args not hash") unless data.is_a?(Hash)
+      #
+      #   instance = self_new(data)
+      #   instance.created_at ||= Time.current
+      #   instance.updated_at ||= Time.current
+      #
+      #   return instance unless instance.valid?
+      #
+      #   ref = firestore.col @collection_path
+      #   instance.attributes.delete('id')
+      #   ref = ref.add instance.attributes
+      #   instance.id = ref.document_id
+      #
+      #   instance
+      # end
 
       def create_by_id(data)
         raise Exception.new("#{self.class.name} create args not hash") unless data.is_a?(Hash)

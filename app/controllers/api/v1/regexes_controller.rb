@@ -18,12 +18,10 @@ module Api
 
       def create
         regex = Regex.create(regex_params)
+        Tag.create(regex_params[:tags])
 
-        if regex.valid?
-          render json: { status: 'SUCCESS', data: regex.attributes }
-        else
-          render json: { status: 'ERROR', message: 'Not created', data: regex.errors.full_messages }, status: :bad_request
-        end
+        render json: { status: 'SUCCESS', data: regex }
+        # render json: { status: 'ERROR', message: 'Not created', data: regex.errors.full_messages }, status: :bad_request
       end
 
       def destroy
@@ -46,7 +44,7 @@ module Api
       end
 
       def regex_params
-        params.permit(:id, :text, :option_text, check_target: [:target, result: [:index, :message, :error_message, :is_match, :is_error]]).to_h
+        params.permit(:id, :text, :option_text, :title, tags: [], check_target: [:target, result: [:index, :message, :error_message, :is_match, :is_error]]).to_h
       end
 
       def query_params
