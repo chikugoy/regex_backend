@@ -1,0 +1,21 @@
+ja:
+  activemodel:
+    models:
+      regex: 正規表現
+    attributes:
+      regex:
+        text: 比較テキスト
+        created_at: 作成日
+        updated_at: 更新日
+    errors:
+      models:
+        text:
+          attributes:
+            text:
+              format: '%{message}'
+              blank: この%{attribute}は１文字以上入力してください。
+      messages:
+        record_invalid: 'バリデーションに失敗しました: %{errors}'
+        restrict_dependent_destroy:
+          has_one: "%{record}が存在しているので削除できません"
+          has_many: "%{record}が存在しているので削除できません"

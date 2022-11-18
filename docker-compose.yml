@@ -1,0 +1,54 @@
+version: "3.9"
+
+networks:
+  backend:
+
+services:
+  rails_firestore_db:
+    image: postgres
+    hostname: rails_firestore_db
+    volumes:
+      - ./tmp/db:/var/lib/postgresql
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+  rails_firestore_web:
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+    command: bash -c "bundle install && rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/myapp
+    environment:
+      FIRESTORE_EMULATOR_HOST: 'rails_firestore_firebase:8080'
+      GCP_AUTH_KEY_FILE: 'service_account.json'
+      GCP_PROJECT_ID: 'regex-bc723'
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+  rails_firestore_firebase:
+    build:
+      context: .
+      dockerfile: docker/firebase/Dockerfile
+    hostname: rails_firestore_firebase
+    volumes:
+      - ./firebase/emulators/:/opt/workspace:cached
+      - ./firebase/bin/:/root/.cache:cached
+      - ./firebase/config/:/root/.config:cached
+    ports:
+      - 4000:4000 # Emulator Suite UI
+      - 5002:5000 # Firebase Hosting
+      - 5001:5001 # Clound Functions
+      - 9000:9000 # Realtime Database
+      - 8080:8080 # Cloud Firestore
+      - 8085:8085 # Cloud Pub/Sub
+    working_dir: /opt/workspace
+    networks:
+      - backend
+    command: bash -c "firebase emulators:start"
+    tty: true
