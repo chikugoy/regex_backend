@@ -15,6 +15,8 @@ services:
       FIRESTORE_EMULATOR_HOST: 'regex_backend_firebase:8080'
       GCP_AUTH_KEY_FILE: 'service_account.json'
       GCP_PROJECT_ID: 'regex-bc723'
+      REGX_LANGUAGE: 'Ruby'
+      REGX_LANGUAGE_VERSION: '3.1.2'
     ports:
       - "3000:3000"
     networks:
@@ -38,5 +40,5 @@ services:
     working_dir: /opt/workspace
     networks:
       - backend
-    command: bash -c "firebase emulators:start"
+    command: bash -c "firebase emulators:start --import=./data --export-on-exit"
     tty: true
