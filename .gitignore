@@ -44,3 +44,5 @@
 config/firebase/service_account.json
 
 vendor/bundle/*
+
+deploy.md

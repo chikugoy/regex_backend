@@ -36,6 +36,9 @@
     "singleProjectMode": true,
     "functions": {
       "port": 5001
+    },
+    "hosting": {
+      "port": 5000
     }
   },
   "hosting": {
@@ -44,12 +47,15 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
     ]
+  },
+  "database": {
+    "rules": "n"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "remoteconfig": {
+    "template": "　"
   }
 }
