@@ -53,6 +53,9 @@ module Api
         query[:text] = params[:text] unless params[:text].blank?
         query
       end
+      def remote_ip
+        request.env["HTTP_X_FORWARDED_FOR"] || request.remote_ip
+      end
     end
   end
 end
