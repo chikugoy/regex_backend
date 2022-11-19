@@ -5,7 +5,6 @@ deploy.md
 .idea/*
 .git/*
 tmp/*
-log/*
 .devcontainer/*
 deploy.md
 !config/firebase/service_account.json
