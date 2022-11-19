@@ -1,0 +1,4 @@
+!config/firebase/service_account.json
+firebase/*
+docker/*
+deploy.md
