@@ -4,15 +4,15 @@ module Firestore
     class_attribute :collection_path
 
     class << self
-      # def find(*ids)
-      #   results = []
-      #   ids.each do |id|
-      #     result = firestore.col(@collection_path).doc(id).get.fields
-      #     next if !result
-      #     results << self_new(result.merge({id: id}))
-      #   end
-      #   results
-      # end
+      def find(*ids)
+        results = []
+        ids.each do |id|
+          result = firestore.col(@collection_path).doc(id).get.fields
+          next if !result
+          results << result
+        end
+        results
+      end
 
       def find_row(id)
         results = self.find(id)
@@ -29,7 +29,7 @@ module Firestore
         end
 
         ref.get.map do |record|
-          self_new(record.fields.merge({:id => record.document_id}))
+          record.fields.merge({:id => record.document_id})
         end
       end
 

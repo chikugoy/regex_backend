@@ -8,12 +8,12 @@ module Api
         render json: {
           status: 'SUCCESS',
           message: 'Loaded regexes',
-          data: regexes.map { |regex| regex.attributes }
+          data: regexes.map { |regex| regex }
         }
       end
 
       def show
-        render json: { status: 'SUCCESS', message: 'Loaded the regex', data: @regex.attributes }
+        render json: { status: 'SUCCESS', message: 'Loaded the regex', data: @regex }
       end
 
       def create
@@ -31,7 +31,7 @@ module Api
 
       def update
         if @regex.save(regex_params.to_h)
-          render json: { status: 'SUCCESS', message: 'Updated the regex', data: @regex.attributes }
+          render json: { status: 'SUCCESS', message: 'Updated the regex', data: @regex }
         else
           render json: { status: 'SUCCESS', message: 'Not updated', data: @regex.errors.full_messages  }, status: :bad_request
         end

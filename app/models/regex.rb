@@ -1,5 +1,6 @@
 class Regex < Firestore::FirestoreRecord
   COLLECTION_PATH = 'regex'.freeze
+  @collection_path = COLLECTION_PATH
 
   def self.create(data)
     raise Exception.new("#{self.class.name} create args not hash") unless data.is_a?(Hash)
