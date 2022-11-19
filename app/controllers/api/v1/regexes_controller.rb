@@ -44,7 +44,7 @@ module Api
       end
 
       def regex_params
-        params.permit(:id, :text, :option_text, :title, tags: [], check_target: [:target, result: [:index, :message, :error_message, :is_match, :is_error]]).to_h
+        params.permit(:id, :text, :option_text, :title, tags: [], check_targets: [:target, result: [:index, :message, :error_message, :is_match, :is_error]]).to_h
       end
 
       def query_params
