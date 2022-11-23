@@ -5,7 +5,12 @@ module Api
       before_action :verify_token, only: [:create]
 
       def index
-        regexes = Regex.find_by(query_params)
+        if query_params[:is_recommend]
+          regexes = Regex.find_by_recommend
+        else
+          regexes = Regex.find_by_own(query_params[:user_id])
+        end
+
         render json: {
           status: 'SUCCESS',
           message: 'Loaded regexes',
@@ -56,6 +61,8 @@ module Api
         query = {}
         query[:id] = params[:id] unless params[:id].blank?
         query[:text] = params[:text] unless params[:text].blank?
+        query[:user_id] = params[:user_id] unless params[:user_id].blank?
+        query[:is_recommend] = params[:is_recommend] unless params[:is_recommend].blank?
         query
       end
       def remote_ip
