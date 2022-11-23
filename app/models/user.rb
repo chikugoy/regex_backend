@@ -1,32 +1,35 @@
 class User < Firestore::FirestoreRecord
   COLLECTION_PATH = 'user'.freeze
-
-  def self.find_by_ip(ip)
-    firestore.col(self::COLLECTION_PATH).doc(id).get.fields
-  end
+  @collection_path = COLLECTION_PATH
 
   def self.find_row(id)
     firestore.col(self::COLLECTION_PATH).doc(id).get.fields
   end
 
-  def self.create(tags)
-    return false if tags.blank?
+  def self.create(data)
+    raise Exception.new("#{self.class.name} create args not hash") unless data.is_a?(Hash)
 
-    tags = tags.uniq
+    uid = data[:uid]
+    data.delete(:uid)
+    data[:created_at] ||= Time.current
+    data[:updated_at] ||= Time.current
 
-    tags.each do |tag|
-      ret = find_row(tag)
-      next unless ret.blank?
+    ref = firestore.doc "#{self::COLLECTION_PATH}/#{uid}"
+    ref.set data
 
-      data = {}
-      data[:name] = tag
-      data[:created_at] ||= Time.current
-      data[:updated_at] ||= Time.current
+    data[:id] = uid
+  end
 
-      ref = firestore.doc "#{self::COLLECTION_PATH}/#{tag}"
-      ref.set(data)
-    end
+  def self.update(data)
+    raise Exception.new("#{self.class.name} create args not hash") unless data.is_a?(Hash)
 
-    return true
+    uid = data[:uid]
+    data.delete(:uid)
+    data[:updated_at] ||= Time.current
+
+    ref = firestore.doc "#{self::COLLECTION_PATH}/#{uid}"
+    ref.set(data, merge: true)
+
+    data[:id] = uid
   end
 end

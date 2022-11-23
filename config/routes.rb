@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     namespace 'v1' do
       resources :regexes
       post 'regex', to: 'regex#check'
+      post 'users', to: 'users#create'
     end
   end
 end
