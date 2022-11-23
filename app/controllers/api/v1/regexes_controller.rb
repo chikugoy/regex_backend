@@ -2,6 +2,7 @@ module Api
   module V1
     class RegexesController < ApplicationController
       before_action :set_regex, only: [:show, :update, :destroy]
+      before_action :verify_token, only: [:create]
 
       def index
         regexes = Regex.find_by(query_params)
@@ -39,12 +40,16 @@ module Api
 
       private
 
+      def verify_token
+        Firebase::Auth::verify_token(regex_params[:token])
+      end
+
       def set_regex
         @regex = Regex.find_row(params[:id])
       end
 
       def regex_params
-        params.permit(:id, :text, :option_text, :title, tags: [], check_targets: [:target, result: [:index, :message, :error_message, :is_match, :is_error]]).to_h
+        params.permit(:id, :token, :user_id, :text, :option_text, :title, tags: [], check_targets: [:target, result: [:index, :message, :error_message, :is_match, :is_error]]).to_h
       end
 
       def query_params

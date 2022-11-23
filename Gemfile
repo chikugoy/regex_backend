@@ -83,3 +83,5 @@ gem 'google-cloud-firestore'
 gem 'rails-i18n'
 
 gem 'rack-cors'
+
+gem "jwt"

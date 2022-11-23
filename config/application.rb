@@ -22,5 +22,7 @@ module Myapp
 
     config.i18n.default_locale = :ja
     config.i18n.load_path += Dir[Rails.root.join('config/locales/**/*.yml').to_s]
+
+    config.autoload_paths << "#{root}/lib"
   end
 end
