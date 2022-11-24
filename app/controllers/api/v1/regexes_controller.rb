@@ -16,6 +16,9 @@ module Api
           message: 'Loaded regexes',
           data: regexes.map { |regex| regex }
         }
+      rescue => e
+        logger.error e
+        raise e
       end
 
       def show
@@ -28,6 +31,9 @@ module Api
 
         render json: { status: 'SUCCESS', data: regex }
         # render json: { status: 'ERROR', message: 'Not created', data: regex.errors.full_messages }, status: :bad_request
+      rescue => e
+        logger.error e
+        raise e
       end
 
       def destroy

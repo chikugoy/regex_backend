@@ -12,6 +12,10 @@ module Api
         end
 
         render json: { status: 'SUCCESS', data: results }
+
+      rescue => e
+        logger.error e
+        raise e
       end
 
       private
