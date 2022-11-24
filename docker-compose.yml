@@ -43,6 +43,6 @@ services:
     working_dir: /opt/workspace
     networks:
       - backend
-    #    command: bash -c "/bin/bash"
+#    command: bash -c "/bin/bash"
     command: bash -c "firebase emulators:start --import=./data --export-on-exit"
     tty: true

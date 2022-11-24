@@ -5,6 +5,7 @@ RAILS_PORT=8080
 #fi
 
 # assets precompile
+bundle install --path vendor/bundle
 bundle exec rake assets:precompile RAILS_ENV=production
 
 # Remove a potentially pre-existing server.pid for Rails.

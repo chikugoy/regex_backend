@@ -49,13 +49,7 @@
       "**/node_modules/**"
     ]
   },
-  "database": {
-    "rules": "n"
-  },
   "storage": {
     "rules": "storage.rules"
-  },
-  "remoteconfig": {
-    "template": "　"
   }
 }
