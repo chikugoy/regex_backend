@@ -8,3 +8,4 @@ tmp/*
 .devcontainer/*
 deploy.md
 !config/firebase/service_account.json
+!app/lib/firebase/auth.rb
