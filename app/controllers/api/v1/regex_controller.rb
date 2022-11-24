@@ -27,17 +27,21 @@ module Api
         begin
           reg = get_regexp(text, optionText)
           if reg.match?(target)
-            result[:message] = 'マッチしました！'
+            result[:message] = get_regex_text(target, text)
             result[:is_match] = true
             return result
           end
-          result[:message] = 'マッチしませんでした。'
+          result[:message] = target
         rescue => e
           result[:is_error] = true
           result[:error_message] = e.message
         end
 
         result
+      end
+
+      def get_regex_text(target, text)
+        target.gsub(/#{text}/, '{{{match_start}}}\&{{{match_end}}}')
       end
 
       def get_regexp(text, optionText)

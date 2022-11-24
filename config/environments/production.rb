@@ -88,6 +88,9 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
+  # config.google_cloud.project_id = ENV['GCP_PROJECT_ID']
+  # config.google_cloud.keyfile = Rails.root.join('config/firebase', ENV["GCP_AUTH_KEY_FILE"]).to_s
+
   # Do not dump schema after migrations.
   # config.active_record.dump_schema_after_migration = false
 end
