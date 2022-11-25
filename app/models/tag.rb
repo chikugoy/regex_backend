@@ -5,7 +5,7 @@ class Tag < Firestore::FirestoreRecord
     firestore.col(self::COLLECTION_PATH).doc(id).get.fields
   end
 
-  def self.create(tags)
+  def self.find_to_create(tags)
     return false if tags.blank?
 
     tags = tags.uniq
