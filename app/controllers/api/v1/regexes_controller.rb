@@ -27,7 +27,7 @@ module Api
 
       def create
         regex = Regex.create(regex_params)
-        Tag.create(regex_params[:tags])
+        Tag.find_to_create(regex_params[:tags])
 
         render json: { status: 'SUCCESS', data: regex }
         # render json: { status: 'ERROR', message: 'Not created', data: regex.errors.full_messages }, status: :bad_request
@@ -42,11 +42,14 @@ module Api
       end
 
       def update
-        if @regex.save(regex_params.to_h)
-          render json: { status: 'SUCCESS', message: 'Updated the regex', data: @regex }
-        else
-          render json: { status: 'SUCCESS', message: 'Not updated', data: @regex.errors.full_messages  }, status: :bad_request
-        end
+        regex = Regex.update(params[:id], regex_params)
+        Tag.find_to_create(regex_params[:tags])
+
+        render json: { status: 'SUCCESS', data: regex }
+        # render json: { status: 'ERROR', message: 'Not created', data: regex.errors.full_messages }, status: :bad_request
+      rescue => e
+        logger.error e
+        raise e
       end
 
       private
@@ -60,7 +63,7 @@ module Api
       end
 
       def regex_params
-        params.permit(:id, :token, :user_id, :text, :option_text, :title, tags: [], check_targets: [:target, result: [:index, :message, :error_message, :is_match, :is_error]]).to_h
+        params.permit(:token, :user_id, :text, :option_text, :title, tags: [], check_targets: [:target, result: [:index, :message, :error_message, :is_match, :is_error]]).to_h
       end
 
       def query_params
