@@ -13,7 +13,7 @@ class Regex < Firestore::FirestoreRecord
     end
   end
 
-  def self.find_by_recommend()
+  def self.find_by_recommend
     ref = firestore.col @collection_path
     query = ref.order('good_user_count', 'desc').order('updated_at', 'desc')
 
