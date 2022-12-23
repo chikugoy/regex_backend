@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     namespace 'v1' do
       resources :regexes
       post 'regexes/check', to: 'regexes#check'
+      post 'regexes/:id/like', to: 'regexes#like'
+      post 'regexes/:id/dislike', to: 'regexes#dislike'
       post 'users', to: 'users#create'
     end
   end

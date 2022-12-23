@@ -1,8 +1,9 @@
 module Api
   module V1
     class RegexesController < ApplicationController
-      before_action :set_regex, only: %i[show update destroy]
+      before_action :set_regex, only: %i[show update destroy like dislike]
       before_action :verify_token, only: %i[create update]
+      before_action :verify_token_like, only: %i[like dislike]
       before_action :verify_token_by_header, only: [:destroy]
       before_action :validate, only: [:check]
 
@@ -63,10 +64,32 @@ module Api
         raise e
       end
 
+      def like
+        Regex.update(params[:id], { good_user_ids: good_user_ids }, false)
+
+        render json: { status: 'SUCCESS', data: {} }
+      rescue StandardError => e
+        logger.error e
+        raise e
+      end
+
+      def dislike
+        Regex.update(params[:id], { good_user_ids: dis_good_user_ids }, false)
+
+        render json: { status: 'SUCCESS', data: {} }
+      rescue StandardError => e
+        logger.error e
+        raise e
+      end
+
       private
 
       def verify_token
         Firebase::Auth.verify_token(regex_params[:token])
+      end
+
+      def verify_token_like
+        Firebase::Auth.verify_token(like_params[:token])
       end
 
       def verify_token_by_header
@@ -79,7 +102,11 @@ module Api
 
       def regex_params
         params.permit(:token, :user_id, :text, :option_text, :title, :supplement, tags: [],
-                      check_targets: [:target, { result: %i[index message error_message is_match is_error] }]).to_h
+                                                                                  check_targets: [:target, { result: %i[index message error_message is_match is_error] }]).to_h
+      end
+
+      def like_params
+        params.permit(:token, :user_id).to_h
       end
 
       def query_params
@@ -99,6 +126,17 @@ module Api
         params[:targets].filter do |target|
           !target[:target].blank?
         end
+      end
+
+      def good_user_ids
+        @regex[:good_user_ids] = [] if @regex[:good_user_ids].blank?
+        @regex[:good_user_ids] << like_params[:user_id]
+        @regex[:good_user_ids].uniq
+      end
+
+      def dis_good_user_ids
+        @regex[:good_user_ids].delete(like_params[:user_id]) unless @regex[:good_user_ids].blank?
+        @regex[:good_user_ids]
       end
 
       def validate

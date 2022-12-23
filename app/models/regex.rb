@@ -41,11 +41,13 @@ class Regex < Firestore::FirestoreRecord
       data
     end
 
-    def update(id, data)
+    def update(id, data, is_updated_at = true)
       raise Exception, "#{self.class.name} create args not hash" unless data.is_a?(Hash)
       raise Exception, "#{self.class.name} save args id not found" unless Regex.find_row(id)
 
-      data[:updated_at] ||= Time.current
+      if is_updated_at
+        data[:updated_at] ||= Time.current
+      end
 
       ref = firestore.doc "#{self::COLLECTION_PATH}/#{id}"
       ref.set(data, merge: true)
