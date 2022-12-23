@@ -2,7 +2,7 @@ module Api
   module V1
     class RegexController < ApplicationController
       def check
-        if !validate
+        unless validate
           render json: { status: 'ERROR', message: 'Validate error', data: [] }, status: :bad_request
           return
         end
@@ -12,8 +12,7 @@ module Api
         end
 
         render json: { status: 'SUCCESS', data: results }
-
-      rescue => e
+      rescue StandardError => e
         logger.error e
         raise e
       end
@@ -22,11 +21,11 @@ module Api
 
       def match(text, target, optionText, i)
         result = {
-          :index => i,
-          :message => '',
-          :error_message => '',
-          :is_match => false,
-          :is_error => false,
+          index: i,
+          message: '',
+          error_message: '',
+          is_match: false,
+          is_error: false
         }
         begin
           reg = get_regexp(text, optionText)
@@ -36,7 +35,7 @@ module Api
             return result
           end
           result[:message] = target
-        rescue => e
+        rescue StandardError => e
           result[:is_error] = true
           result[:error_message] = e.message
         end
@@ -61,30 +60,31 @@ module Api
         end
 
         if isIgnoreCase && isExtended && isMultiline
-          return Regexp.new(text, Regexp::IGNORECASE | Regexp::MULTILINE | Regexp::EXTENDED)
+          Regexp.new(text, Regexp::IGNORECASE | Regexp::MULTILINE | Regexp::EXTENDED)
         elsif isMultiline && isExtended
-          return Regexp.new(text, Regexp::MULTILINE | Regexp::EXTENDED)
+          Regexp.new(text, Regexp::MULTILINE | Regexp::EXTENDED)
         elsif isIgnoreCase && isMultiline
-          return Regexp.new(text, Regexp::IGNORECASE | Regexp::MULTILINE )
+          Regexp.new(text, Regexp::IGNORECASE | Regexp::MULTILINE)
         elsif isMultiline
-          return Regexp.new(text, Regexp::MULTILINE)
+          Regexp.new(text, Regexp::MULTILINE)
         elsif isIgnoreCase && isExtended
-          return Regexp.new(text, Regexp::IGNORECASE | Regexp::EXTENDED)
+          Regexp.new(text, Regexp::IGNORECASE | Regexp::EXTENDED)
         elsif isExtended
-          return Regexp.new(text, Regexp::EXTENDED)
+          Regexp.new(text, Regexp::EXTENDED)
         else
-          return Regexp.new(text, Regexp::IGNORECASE)
+          Regexp.new(text, Regexp::IGNORECASE)
         end
       end
 
       def targets
-        params[:targets].filter do | target |
+        params[:targets].filter do |target|
           !target[:target].blank?
         end
       end
 
       def validate
         return false if params[:text].blank? || targets.blank?
+
         true
       end
     end

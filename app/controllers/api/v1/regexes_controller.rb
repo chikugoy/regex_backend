@@ -1,22 +1,22 @@
 module Api
   module V1
     class RegexesController < ApplicationController
-      before_action :set_regex, only: [:show, :update, :destroy]
+      before_action :set_regex, only: %i[show update destroy]
       before_action :verify_token, only: [:create]
 
       def index
-        if query_params[:is_recommend]
-          regexes = Regex.find_by_recommend
-        else
-          regexes = Regex.find_by_own(query_params[:user_id])
-        end
+        regexes = if query_params[:is_recommend]
+                    Regex.find_by_recommend
+                  else
+                    Regex.find_by_own(query_params[:user_id])
+                  end
 
         render json: {
           status: 'SUCCESS',
           message: 'Loaded regexes',
           data: regexes.map { |regex| regex }
         }
-      rescue => e
+      rescue StandardError => e
         logger.error e
         raise e
       end
@@ -31,7 +31,7 @@ module Api
 
         render json: { status: 'SUCCESS', data: regex }
         # render json: { status: 'ERROR', message: 'Not created', data: regex.errors.full_messages }, status: :bad_request
-      rescue => e
+      rescue StandardError => e
         logger.error e
         raise e
       end
@@ -47,7 +47,7 @@ module Api
 
         render json: { status: 'SUCCESS', data: regex }
         # render json: { status: 'ERROR', message: 'Not created', data: regex.errors.full_messages }, status: :bad_request
-      rescue => e
+      rescue StandardError => e
         logger.error e
         raise e
       end
@@ -55,7 +55,7 @@ module Api
       private
 
       def verify_token
-        Firebase::Auth::verify_token(regex_params[:token])
+        Firebase::Auth.verify_token(regex_params[:token])
       end
 
       def set_regex
@@ -63,7 +63,8 @@ module Api
       end
 
       def regex_params
-        params.permit(:token, :user_id, :text, :option_text, :title, :supplement, tags: [], check_targets: [:target, result: [:index, :message, :error_message, :is_match, :is_error]]).to_h
+        params.permit(:token, :user_id, :text, :option_text, :title, :supplement, tags: [],
+                                                                                  check_targets: [:target, { result: %i[index message error_message is_match is_error] }]).to_h
       end
 
       def query_params
@@ -74,8 +75,9 @@ module Api
         query[:is_recommend] = params[:is_recommend] unless params[:is_recommend].blank?
         query
       end
+
       def remote_ip
-        request.env["HTTP_X_FORWARDED_FOR"] || request.remote_ip
+        request.env['HTTP_X_FORWARDED_FOR'] || request.remote_ip
       end
     end
   end

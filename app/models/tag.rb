@@ -23,6 +23,6 @@ class Tag < Firestore::FirestoreRecord
       ref.set(data)
     end
 
-    return true
+    true
   end
 end

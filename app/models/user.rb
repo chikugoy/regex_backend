@@ -7,7 +7,7 @@ class User < Firestore::FirestoreRecord
   end
 
   def self.create(data)
-    raise Exception.new("#{self.class.name} create args not hash") unless data.is_a?(Hash)
+    raise Exception, "#{self.class.name} create args not hash" unless data.is_a?(Hash)
 
     uid = data[:uid]
     data.delete(:uid)
@@ -21,7 +21,7 @@ class User < Firestore::FirestoreRecord
   end
 
   def self.update(data)
-    raise Exception.new("#{self.class.name} create args not hash") unless data.is_a?(Hash)
+    raise Exception, "#{self.class.name} create args not hash" unless data.is_a?(Hash)
 
     uid = data[:uid]
     data.delete(:uid)

@@ -6,10 +6,10 @@ class Regex < Firestore::FirestoreRecord
     return nil if userId.blank?
 
     ref = firestore.col @collection_path
-    query = ref.where('user_id', "=", userId).order('updated_at', 'desc')
+    query = ref.where('user_id', '=', userId).order('updated_at', 'desc')
 
     query.get.map do |record|
-      record.fields.merge({:id => record.document_id})
+      record.fields.merge({ id: record.document_id })
     end
   end
 
@@ -18,12 +18,12 @@ class Regex < Firestore::FirestoreRecord
     query = ref.order('good_user_count', 'desc').order('updated_at', 'desc')
 
     query.get.map do |record|
-      record.fields.merge({:id => record.document_id})
+      record.fields.merge({ id: record.document_id })
     end
   end
 
   def self.create(data)
-    raise Exception.new("#{self.class.name} create args not hash") unless data.is_a?(Hash)
+    raise Exception, "#{self.class.name} create args not hash" unless data.is_a?(Hash)
 
     data[:good_user_count] ||= 0
     data[:good_user_ids] ||= []
@@ -41,8 +41,8 @@ class Regex < Firestore::FirestoreRecord
   end
 
   def self.update(id, data)
-    raise Exception.new("#{self.class.name} create args not hash") unless data.is_a?(Hash)
-    raise Exception.new("#{self.class.name} save args id not found") unless Regex.find_row(id)
+    raise Exception, "#{self.class.name} create args not hash" unless data.is_a?(Hash)
+    raise Exception, "#{self.class.name} save args id not found" unless Regex.find_row(id)
 
     data[:updated_at] ||= Time.current
 
@@ -52,5 +52,4 @@ class Regex < Firestore::FirestoreRecord
     data[:id] = id
     data
   end
-
 end

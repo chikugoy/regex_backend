@@ -3,15 +3,15 @@ require 'rails_helper'
 # logger
 Rails.logger = Logger.new(STDOUT)
 
-RSpec.describe "Regex", type: :model do
+RSpec.describe 'Regex', type: :model do
   describe 'validate' do
     regex_base = Regex.new(
-      :text => 'test',
-      :created_at => Time.current,
-      :updated_at => Time.current
+      text: 'test',
+      created_at: Time.current,
+      updated_at: Time.current
     )
 
-    context "text" do
+    context 'text' do
       it 'presence: true' do
         regex = regex_base.deep_dup
         regex.text = ''
@@ -20,7 +20,7 @@ RSpec.describe "Regex", type: :model do
       end
     end
 
-    context "created_at" do
+    context 'created_at' do
       it 'presence: true' do
         regex = regex_base.deep_dup
 
@@ -30,7 +30,7 @@ RSpec.describe "Regex", type: :model do
       end
     end
 
-    context "updated_at" do
+    context 'updated_at' do
       it 'presence: true' do
         regex = regex_base.deep_dup
 
