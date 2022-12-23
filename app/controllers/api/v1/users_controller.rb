@@ -4,10 +4,10 @@ module Api
       def create
         user = User.find_row(user_params[:uid])
         user = if user
-                 User.update(user_params)
-               else
-                 User.create(user_params)
-               end
+          User.update(user_params)
+        else
+          User.create(user_params)
+        end
 
         render json: { status: 'SUCCESS', data: user }
       end

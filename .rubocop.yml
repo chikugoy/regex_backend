@@ -1,5 +1,19 @@
+inherit_gem:
+  rubocop-discourse: default.yml
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+    - 'bin/**/*'
+  DisplayCopNames: true
+  NewCops: enable
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+RSpec/EmptyExampleGroup:
+  Enabled: false
+Documentation:
+  Enabled: false

@@ -72,6 +72,7 @@ group :development do
   #
   gem 'rubocop'
   gem 'rubocop-rails'
+  gem 'rubocop-discourse'
 end
 
 group :test do
