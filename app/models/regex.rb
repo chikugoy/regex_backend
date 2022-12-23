@@ -1,5 +1,6 @@
 class Regex < Firestore::FirestoreRecord
   COLLECTION_PATH = 'regex'
+  @collection_path = COLLECTION_PATH
 
   class << self
     def find_by_own(user_id)

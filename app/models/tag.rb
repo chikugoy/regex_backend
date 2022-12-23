@@ -1,5 +1,6 @@
 class Tag < Firestore::FirestoreRecord
   COLLECTION_PATH = 'tag'.freeze
+  @collection_path = COLLECTION_PATH
 
   def self.find_row(id)
     firestore.col(self::COLLECTION_PATH).doc(id).get.fields

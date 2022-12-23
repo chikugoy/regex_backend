@@ -1,5 +1,5 @@
 class User < Firestore::FirestoreRecord
-  COLLECTION_PATH = 'user'.freeze
+  COLLECTION_PATH = 'user'
   @collection_path = COLLECTION_PATH
 
   def self.find_row(id)
