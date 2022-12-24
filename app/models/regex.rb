@@ -45,6 +45,18 @@ class Regex < Firestore::FirestoreRecord
       raise Exception, "#{self.class.name} create args not hash" unless data.is_a?(Hash)
       raise Exception, "#{self.class.name} save args id not found" unless Regex.find_row(id)
 
+      unless data[:tags].blank?
+        data[:tags] = data[:tags].reject { |i| i.nil? || i.empty? }
+        data[:tags] = data[:tags].uniq
+      end
+
+      data[:good_user_count] = 0
+      unless data[:good_user_ids].blank?
+        data[:good_user_ids] = data[:good_user_ids].reject { |i| i.nil? || i.empty? }
+        data[:good_user_ids] = data[:good_user_ids].uniq
+        data[:good_user_count] = data[:good_user_ids].size
+      end
+
       if is_updated_at
         data[:updated_at] ||= Time.current
       end
