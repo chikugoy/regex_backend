@@ -26,8 +26,6 @@ Rack version       2.2.4
 
 ```bash
 docker-compose build
-#docker-compose run regex_backend_web rails db:create
-#docker-compose run regex_backend_web rake db:migrate
 docker-compose up -d
 ```
 
