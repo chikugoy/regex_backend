@@ -1,6 +1,6 @@
 # regex web service backend
 
-frontend : https://github.com/chikugoy/regex_frontend
+frontend : https://github.com/chikugoy/regex_front
 
 ## Use 
 
