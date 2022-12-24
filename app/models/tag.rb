@@ -12,6 +12,7 @@ class Tag < Firestore::FirestoreRecord
     tags = tags.uniq
 
     tags.each do |tag|
+      next if tag.blank?
       ret = find_row(tag)
       next unless ret.blank?
 
