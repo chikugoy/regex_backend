@@ -16,7 +16,7 @@ class Regex < Firestore::FirestoreRecord
 
     def find_by_recommend
       ref = firestore.col self::COLLECTION_PATH
-      query = ref.order('good_user_count', 'desc').order('updated_at', 'desc')
+      query = ref.order('is_recommend', 'desc').order('good_user_count', 'desc').order('updated_at', 'desc')
 
       query.get.map do |record|
         record.fields.merge({ id: record.document_id })
