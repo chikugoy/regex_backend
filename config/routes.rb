@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       post 'regexes/:id/like', to: 'regexes#like'
       post 'regexes/:id/dislike', to: 'regexes#dislike'
       post 'users', to: 'users#create'
+      get 'health_checks', to: 'health_checks#index'
     end
   end
 end
