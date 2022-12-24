@@ -1,4 +1,4 @@
-# regex web service backend
+# Regex web service backend
 
 frontend : https://github.com/chikugoy/regex_front
 
