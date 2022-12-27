@@ -1,6 +1,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
+      before_action :verify_token, only: [:create]
       def create
         user = User.find_row(user_params[:uid])
         user = if user
@@ -14,8 +15,12 @@ module Api
 
       private
 
+      def verify_token
+        Firebase::Auth.verify_token(user_params[:accessToken])
+      end
+
       def user_params
-        params.permit(:uid, :displayName, :email, :accessToken, :refreshToken).to_h
+        params.require(:user).permit(:uid, :displayName, :email, :accessToken).to_h
       end
 
       def remote_ip
